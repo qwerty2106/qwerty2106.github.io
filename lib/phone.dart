@@ -1,7 +1,22 @@
 import 'package:flutter/material.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
+
+const supabaseUrl = 'https://hogfvggthtmezcdatnhn.supabase.co';
+const supabaseKey =
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImhvZ2Z2Z2d0aHRtZXpjZGF0bmhuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjAxMTczMDIsImV4cCI6MjA3NTY5MzMwMn0.MrEc_6Yp0rdOXiwFLyQjfN-eTulhQlwSxathZBw0Ato';
+
+// Future<void> main() async {
+//   await Supabase.initialize(url: supabaseUrl, anonKey: supabaseKey);
+//   runApp(MyApp());
+// }
 
 //Запуск приложения
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Supabase.initialize(
+    url: 'https://dllhkfwyiexblndowpxh.supabase.co',
+    anonKey: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRsbGhrZnd5aWV4YmxuZG93cHhoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjAxMDc4OTEsImV4cCI6MjA3NTY4Mzg5MX0.gd0UW_yiHnH2TotoAv8s6-Jvfg-jPq4ybMKVz18bsaM',
+  );
   runApp(const MyApp());
 }
 
@@ -41,13 +56,14 @@ class _MyHomePageState extends State<MyHomePage> {
       body: Center(
         child: Container(
           color: Colors.white,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Container(color: Colors.indigo, child: header()),
-              body(),
-              footer(),
-            ],
+          child: SingleChildScrollView(
+            child: Column(
+              children: [
+                Container(color: Colors.indigo, child: header()),
+                body(),
+                footer(),
+              ],
+            ),
           ),
         ),
       ),

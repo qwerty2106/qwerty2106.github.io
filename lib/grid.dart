@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-//Запуск приложения
+// Запуск приложения
 void main() {
   runApp(const MyApp());
 }
@@ -39,112 +39,112 @@ class _MyHomePageState extends State<MyHomePage> {
         title: Text(widget.title),
       ),
       body: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Container(
-                    margin: EdgeInsets.all(5),
-                    color: Colors.indigoAccent,
-                    height: 25,
-                    width: 100,
-                  ),
-                  Container(
-                    margin: EdgeInsets.all(5),
-                    color: Colors.indigoAccent,
-                    height: 25,
-                    width: 100,
-                  ),
-                ],
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Container(
-                    margin: EdgeInsets.all(5),
-                    color: Colors.indigo,
-                    height: 50,
-                    width: 50,
-                  ),
-                  Container(
-                    margin: EdgeInsets.all(5),
-                    color: Colors.indigo,
-                    height: 50,
-                    width: 50,
-                  ),
-                  Container(
-                    margin: EdgeInsets.all(5),
-                    color: Colors.indigo,
-                    height: 50,
-                    width: 50,
-                  ),
-                  Container(
-                    margin: EdgeInsets.all(5),
-                    color: Colors.indigo,
-                    height: 50,
-                    width: 50,
-                  ),
-                  Container(
-                    margin: EdgeInsets.all(5),
-                    color: Colors.indigo,
-                    height: 50,
-                    width: 50,
-                  ),
-                  Container(
-                    margin: EdgeInsets.all(5),
-                    color: Colors.indigo,
-                    height: 50,
-                    width: 50,
-                  ),
-                ],
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Container(
-                    margin: EdgeInsets.all(5),
-                    color: Colors.indigo,
-                    height: 50,
-                    width: 50,
-                  ),
-                  Container(
-                    margin: EdgeInsets.all(5),
-                    color: Colors.indigo,
-                    height: 50,
-                    width: 50,
-                  ),
-                  Container(
-                    margin: EdgeInsets.all(5),
-                    color: Colors.indigo,
-                    height: 50,
-                    width: 50,
-                  ),
-                  Container(
-                    margin: EdgeInsets.all(5),
-                    color: Colors.indigo,
-                    height: 50,
-                    width: 50,
-                  ),
-                  Container(
-                    margin: EdgeInsets.all(5),
-                    color: Colors.indigo,
-                    height: 50,
-                    width: 50,
-                  ),
-                  Container(
-                    margin: EdgeInsets.all(5),
-                    color: Colors.indigo,
-                    height: 50,
-                    width: 50,
-                  ),
-                ],
-              ),
-              // Container(color: Colors.amber, width: 30, height: 30),
-              // Text('title'),
-            ],
-          ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Container(
+                  margin: EdgeInsets.all(5),
+                  color: Colors.indigoAccent,
+                  height: 25,
+                  width: 100,
+                ),
+                Container(
+                  margin: EdgeInsets.all(5),
+                  color: Colors.indigoAccent,
+                  height: 25,
+                  width: 100,
+                ),
+              ],
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Container(
+                  margin: EdgeInsets.all(5),
+                  color: Colors.indigo,
+                  height: 50,
+                  width: 50,
+                ),
+                Container(
+                  margin: EdgeInsets.all(5),
+                  color: Colors.indigo,
+                  height: 50,
+                  width: 50,
+                ),
+                Container(
+                  margin: EdgeInsets.all(5),
+                  color: Colors.indigo,
+                  height: 50,
+                  width: 50,
+                ),
+                Container(
+                  margin: EdgeInsets.all(5),
+                  color: Colors.indigo,
+                  height: 50,
+                  width: 50,
+                ),
+                Container(
+                  margin: EdgeInsets.all(5),
+                  color: Colors.indigo,
+                  height: 50,
+                  width: 50,
+                ),
+                Container(
+                  margin: EdgeInsets.all(5),
+                  color: Colors.indigo,
+                  height: 50,
+                  width: 50,
+                ),
+              ],
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Container(
+                  margin: EdgeInsets.all(5),
+                  color: Colors.indigo,
+                  height: 50,
+                  width: 50,
+                ),
+                Container(
+                  margin: EdgeInsets.all(5),
+                  color: Colors.indigo,
+                  height: 50,
+                  width: 50,
+                ),
+                Container(
+                  margin: EdgeInsets.all(5),
+                  color: Colors.indigo,
+                  height: 50,
+                  width: 50,
+                ),
+                Container(
+                  margin: EdgeInsets.all(5),
+                  color: Colors.indigo,
+                  height: 50,
+                  width: 50,
+                ),
+                Container(
+                  margin: EdgeInsets.all(5),
+                  color: Colors.indigo,
+                  height: 50,
+                  width: 50,
+                ),
+                Container(
+                  margin: EdgeInsets.all(5),
+                  color: Colors.indigo,
+                  height: 50,
+                  width: 50,
+                ),
+              ],
+            ),
+            // Container(color: Colors.amber, width: 30, height: 30),
+            // Text('title'),
+          ],
+        ),
       ),
     );
   }

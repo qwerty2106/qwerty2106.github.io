@@ -53,8 +53,8 @@ class _MyHomePageState extends State<MyHomePage> {
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
         title: Text(widget.title),
       ),
-      body: Center(
-        child: Container(
+      body: 
+        Container(
           color: Colors.white,
           child: SingleChildScrollView(
             child: Column(
@@ -65,7 +65,6 @@ class _MyHomePageState extends State<MyHomePage> {
               ],
             ),
           ),
-        ),
       ),
     );
   }

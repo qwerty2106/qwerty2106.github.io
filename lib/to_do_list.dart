@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
+String test = 'test';
+
 //Запуск приложения
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -39,6 +41,7 @@ final _tasksStream = Supabase.instance.client
     .stream(primaryKey: ['id']);
 
 class _MyHomePageState extends State<MyHomePage> {
+  var isChecked = false;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -53,20 +56,31 @@ class _MyHomePageState extends State<MyHomePage> {
             return const Center(child: CircularProgressIndicator());
           }
           final tasks = snapshot.data!; //не null
+          print(tasks);
           return ListView.separated(
             itemCount: tasks.length,
             separatorBuilder: (context, index) => Divider(),
             itemBuilder: (context, i) => ListTile(
               leading: Icon(Icons.bookmark),
-              // trailing: Checkbox(
-              //   value: isChecked,
-              //   onChanged: (value) {
-              //     setState(() {
-              //       isChecked = value!;
-              //     });
-              //   },
-              // ),
-              title: Text(tasks[i]['name']),
+              trailing: Checkbox(
+                value: tasks[i]['is_done'],
+                onChanged: (value) async {
+                  await Supabase.instance.client
+                      .from('tasks')
+                      .update({'is_done': value})
+                      .eq('id', tasks[i]['id']);
+                  //   setState(() {
+                  //      isChecked = value!;
+                  //    });
+                },
+              ),
+              title: Text(
+                tasks[i]['name'] +
+                    ',' +
+                    i.toString() +
+                    ',' +
+                    tasks[i]['id'].toString(),
+              ),
             ),
           );
         },

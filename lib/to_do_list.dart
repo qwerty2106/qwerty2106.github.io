@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:table_calendar/table_calendar.dart';
 
 String test = 'test';
 
@@ -41,70 +42,88 @@ final _tasksStream = Supabase.instance.client
     .stream(primaryKey: ['id']);
 
 class _MyHomePageState extends State<MyHomePage> {
-  var isChecked = false;
+  // var isChecked = false;
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        title: Text('To-Do List'),
-      ),
-      body: StreamBuilder<List<Map<String, dynamic>>>(
-        stream: _tasksStream,
-        builder: (context, snapshot) {
-          if (!snapshot.hasData) {
-            return const Center(child: CircularProgressIndicator());
-          }
-          final tasks = snapshot.data!; //не null
-          print(tasks);
-          return ListView.separated(
-            itemCount: tasks.length,
-            separatorBuilder: (context, index) => Divider(),
-            itemBuilder: (context, i) => ListTile(
-              leading: Icon(Icons.bookmark),
-              trailing: Checkbox(
-                value: tasks[i]['is_done'],
-                onChanged: (value) async {
-                  await Supabase.instance.client
-                      .from('tasks')
-                      .update({'is_done': value})
-                      .eq('id', tasks[i]['id']);
-                  //   setState(() {
-                  //      isChecked = value!;
-                  //    });
-                },
-              ),
-              title: Text(
-                tasks[i]['name'] +
-                    ',' +
-                    i.toString() +
-                    ',' +
-                    tasks[i]['id'].toString(),
-              ),
-            ),
-          );
-        },
-      ),
-      floatingActionButton: FloatingActionButton(
-        child: const Icon(Icons.add),
-        onPressed: () {
-          showDialog(
-            context: context,
-            builder: (context) {
-              return SimpleDialog(
-                children: [
-                  TextFormField(
-                    onFieldSubmitted: (value) async {
-                      await Supabase.instance.client.from('tasks').insert({
-                        'name': value,
-                      });
-                    },
+    return DefaultTabController(
+      length: 3,
+      child: Scaffold(
+        appBar: AppBar(
+          bottom: TabBar(
+            tabs: [
+              Tab(icon: Icon(Icons.toc)),
+              Tab(icon: Icon(Icons.done_all)),
+              Tab(icon: Icon(Icons.event)),
+            ],
+          ),
+          backgroundColor: Theme.of(context).colorScheme.inversePrimary,
+          title: Text('To-Do List'),
+        ),
+        body: TabBarView(
+          children: [
+            StreamBuilder<List<Map<String, dynamic>>>(
+              stream: _tasksStream,
+              builder: (context, snapshot) {
+                if (!snapshot.hasData) {
+                  return const Center(child: CircularProgressIndicator());
+                }
+                final tasks = snapshot.data!; //не null
+                print(tasks);
+                return ListView.separated(
+                  itemCount: tasks.length,
+                  separatorBuilder: (context, index) => Divider(),
+                  itemBuilder: (context, i) => ListTile(
+                    leading: Icon(Icons.bookmark),
+                    trailing: Checkbox(
+                      value: tasks[i]['is_done'],
+                      onChanged: (value) async {
+                        await Supabase.instance.client
+                            .from('tasks')
+                            .update({'is_done': value})
+                            .eq('id', tasks[i]['id']);
+                      },
+                    ),
+                    title: Text(
+                      tasks[i]['name'],
+                      style: (tasks[i]['is_done'] ?? false)
+                          ? const TextStyle(
+                              decoration: TextDecoration.lineThrough,
+                            )
+                          : null,
+                    ),
                   ),
-                ],
-              );
-            },
-          );
-        },
+                );
+              },
+            ),
+            const Center(child: Text('done')),
+            TableCalendar(
+              focusedDay: DateTime.now(),
+              firstDay: DateTime.utc(2000, 01, 01),
+              lastDay: DateTime.utc(2030, 01, 01),
+            ),
+          ],
+        ),
+        floatingActionButton: FloatingActionButton(
+          child: const Icon(Icons.add),
+          onPressed: () {
+            showDialog(
+              context: context,
+              builder: (context) {
+                return SimpleDialog(
+                  children: [
+                    TextFormField(
+                      onFieldSubmitted: (value) async {
+                        await Supabase.instance.client.from('tasks').insert({
+                          'name': value,
+                        });
+                      },
+                    ),
+                  ],
+                );
+              },
+            );
+          },
+        ),
       ),
     );
   }

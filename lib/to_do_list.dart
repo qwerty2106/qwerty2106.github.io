@@ -95,7 +95,36 @@ class _MyHomePageState extends State<MyHomePage> {
                 );
               },
             ),
-            const Center(child: Text('done')),
+
+            //2 Вкладка
+            StreamBuilder<List<Map<String, dynamic>>>(
+              stream: _tasksStream,
+              builder: (context, snapshot) {
+                if (!snapshot.hasData) {
+                  return const Center(child: CircularProgressIndicator());
+                }
+                final tasks = snapshot.data!;
+                final filteredTasks = tasks
+                    .where((task) => task['is_done'] == true)
+                    .toList();
+                return ListView.separated(
+                  itemCount: filteredTasks.length,
+                  separatorBuilder: (context, index) => Divider(),
+                  itemBuilder: (context, i) => ListTile(
+                    leading: Icon(Icons.bookmark),
+                    title: Text(
+                      filteredTasks[i]['name'],
+                      style: (TextStyle(
+                        decoration: TextDecoration.lineThrough,
+                      )),
+                    ),
+                  ),
+                );
+              },
+            ),
+
+            //3 Вкладка
+            // const Center(child: Text('done')),
             TableCalendar(
               focusedDay: DateTime.now(),
               firstDay: DateTime.utc(2000, 01, 01),

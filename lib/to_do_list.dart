@@ -43,7 +43,9 @@ final _tasksStream = Supabase.instance.client
     .stream(primaryKey: ['id']);
 
 class _MyHomePageState extends State<MyHomePage> {
-  // var isChecked = false;
+  DateTime _focusedDay = DateTime.now();
+  DateTime _selectedDay = DateTime.now();
+
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
@@ -128,11 +130,18 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
 
             //3 Вкладка
-            // const Center(child: Text('done')),
             TableCalendar(
-              focusedDay: DateTime.now(),
               firstDay: DateTime.utc(2000, 01, 01),
               lastDay: DateTime.utc(2030, 01, 01),
+              focusedDay: _focusedDay,
+              selectedDayPredicate: (day) => isSameDay(day, _selectedDay),
+              onDaySelected: (selectedDay, focusedDay) {
+                setState(() {
+                  _selectedDay = selectedDay;
+                  _focusedDay = focusedDay;
+                });
+              },
+              onPageChanged: (focusedDay) => _focusedDay = focusedDay,
             ),
           ],
         ),

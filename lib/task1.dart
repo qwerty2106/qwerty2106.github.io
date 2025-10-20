@@ -12,6 +12,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
@@ -53,12 +54,94 @@ class _MyHomePageState extends State<MyHomePage> {
       body: Center(
         child: Column(
           children: [
+            //Прямоугольник
+            Padding(
+              padding: EdgeInsets.all(15),
+              child: Container(
+                width: 150,
+                height: 50,
+                color: Colors.deepPurple,
+                // decoration: Shadow(),
+              ),
+            ),
+            //Строка с текстом
+            Padding(
+              padding: EdgeInsets.all(15),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    'Text1',
+                    style: TextStyle(
+                      color: Colors.indigo,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  Text('Text1', style: TextStyle(color: Colors.indigoAccent)),
+                  Text(
+                    'Text3',
+                    style: TextStyle(
+                      fontStyle: FontStyle.italic,
+                      color: Colors.lightBlue,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            //Прямоугольник
+            Padding(
+              padding: EdgeInsets.all(15),
+              child: Container(
+                width: 350,
+                height: 50,
+                color: Colors.deepPurpleAccent,
+              ),
+            ),
+
+            //Скролл с картинками
+            SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              child: Row(
+                children: [
+                  for (int i = 0; i < 15; i++)
+                    Container(
+                      margin: EdgeInsets.all(5),
+                      height: 50,
+                      width: 100,
+                      child: Image(
+                        image: NetworkImage(
+                          'https://avatars.mds.yandex.net/i?id=7689b105b90034863b2e7f312e470b10_l-10639796-images-thumbs&n=13',
+                        ),
+                      ),
+                    ),
+                ],
+              ),
+            ),
+
+            //Круги
             Expanded(
               child: Row(
                 children: [
-                  CircleAvatar(radius: 30, backgroundColor: Colors.deepOrange),
-                  CircleAvatar(radius: 50, backgroundColor: Colors.deepPurple),
-                  Container(width: 100, height: 100, color: Colors.blueGrey),
+                  //Первый круг
+                  Padding(
+                    padding: EdgeInsets.all(15),
+                    child: CircleAvatar(
+                      radius: 30,
+                      backgroundImage: NetworkImage(
+                        'https://i.pinimg.com/originals/2e/d6/28/2ed628e4ebfbf9331e42ddef93cc0600.jpg',
+                      ),
+                    ),
+                  ),
+                  //Второй круг
+                  Padding(
+                    padding: EdgeInsets.all(15),
+                    child: CircleAvatar(
+                      radius: 50,
+                      backgroundImage: NetworkImage(
+                        'https://i.pinimg.com/originals/1e/fb/6c/1efb6c6907e06f2ffddcd07d1fea1a23.jpg',
+                      ),
+                    ),
+                  ),
                 ],
               ),
             ),

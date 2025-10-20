@@ -43,8 +43,8 @@ final _tasksStream = Supabase.instance.client
     .stream(primaryKey: ['id']);
 
 class _MyHomePageState extends State<MyHomePage> {
-  DateTime _focusedDay = DateTime.now();
-  DateTime _selectedDay = DateTime.now();
+  DateTime _focusedDay = DateTime.now(); //Месяц
+  DateTime _selectedDay = DateTime.now(); //Дата
 
   @override
   Widget build(BuildContext context) {
@@ -64,109 +64,125 @@ class _MyHomePageState extends State<MyHomePage> {
         ),
         body: TabBarView(
           children: [
-            StreamBuilder<List<Map<String, dynamic>>>(
-              stream: _tasksStream,
-              builder: (context, snapshot) {
-                if (!snapshot.hasData) {
-                  return const Center(child: CircularProgressIndicator());
-                }
-                final tasks = snapshot.data!; //не null
-                final filteredTasks = tasks
-                    .where((task) => task['is_done'] == false)
-                    .toList();
-                print(tasks);
-                return ListView.separated(
-                  itemCount: filteredTasks.length,
-                  separatorBuilder: (context, index) => Divider(),
-                  itemBuilder: (context, i) => ListTile(
-                    leading: Icon(Icons.bookmark),
-                    trailing: Checkbox(
-                      value: filteredTasks[i]['is_done'],
-                      onChanged: (value) async {
-                        await Supabase.instance.client
-                            .from('tasks')
-                            .update({'is_done': value})
-                            .eq('id', filteredTasks[i]['id']);
-                      },
-                    ),
-                    title: Text(
-                      filteredTasks[i]['name'],
-                      style: (filteredTasks[i]['is_done'] ?? false)
-                          ? const TextStyle(
-                              decoration: TextDecoration.lineThrough,
-                            )
-                          : null,
-                    ),
-                  ),
-                );
-              },
-            ),
-
-            //2 Вкладка
-            StreamBuilder<List<Map<String, dynamic>>>(
-              stream: _tasksStream,
-              builder: (context, snapshot) {
-                if (!snapshot.hasData) {
-                  return const Center(child: CircularProgressIndicator());
-                }
-                final tasks = snapshot.data!;
-                final filteredTasks = tasks
-                    .where((task) => task['is_done'] == true)
-                    .toList();
-                return ListView.separated(
-                  itemCount: filteredTasks.length,
-                  separatorBuilder: (context, index) => Divider(),
-                  itemBuilder: (context, i) => ListTile(
-                    leading: Icon(Icons.bookmark),
-                    title: Text(
-                      filteredTasks[i]['name'],
-                      style: (TextStyle(
-                        decoration: TextDecoration.lineThrough,
-                      )),
-                    ),
-                  ),
-                );
-              },
-            ),
-
-            //3 Вкладка
+            //Вкладки
+            firstTab(),
+            secondTab(),
             TableCalendar(
               firstDay: DateTime.utc(2000, 01, 01),
               lastDay: DateTime.utc(2030, 01, 01),
-              focusedDay: _focusedDay,
+              focusedDay: _focusedDay, //Какая дата сейчас отображается
+              //Проверка совпадает ли дата с выбранной
               selectedDayPredicate: (day) => isSameDay(day, _selectedDay),
+              //Выбор даты
               onDaySelected: (selectedDay, focusedDay) {
                 setState(() {
                   _selectedDay = selectedDay;
                   _focusedDay = focusedDay;
                 });
               },
-              onPageChanged: (focusedDay) => _focusedDay = focusedDay,
+              //Переключение месяцев
+              onPageChanged: (focusedDay) {
+                setState(() {
+                  _focusedDay = focusedDay;
+                });
+              },
             ),
           ],
         ),
-        floatingActionButton: FloatingActionButton(
-          child: const Icon(Icons.add),
-          onPressed: () {
-            showDialog(
-              context: context,
-              builder: (context) {
-                return SimpleDialog(
-                  children: [
-                    TextFormField(
-                      onFieldSubmitted: (value) async {
-                        await Supabase.instance.client.from('tasks').insert({
-                          'name': value,
-                        });
-                      },
-                    ),
-                  ],
-                );
-              },
-            );
-          },
-        ),
+
+        floatingActionButton: addButton(context),
       ),
     );
   }
+}
+
+//Вкладка 1
+Widget secondTab() {
+  return StreamBuilder<List<Map<String, dynamic>>>(
+    stream: _tasksStream,
+    builder: (context, snapshot) {
+      if (!snapshot.hasData) {
+        return const Center(child: CircularProgressIndicator());
+      }
+      final tasks = snapshot.data!;
+      final filteredTasks = tasks
+          .where((task) => task['is_done'] == true)
+          .toList();
+      return ListView.separated(
+        itemCount: filteredTasks.length,
+        separatorBuilder: (context, index) => Divider(),
+        itemBuilder: (context, i) => ListTile(
+          leading: Icon(Icons.bookmark),
+          title: Text(
+            filteredTasks[i]['name'],
+            style: (TextStyle(decoration: TextDecoration.lineThrough)),
+          ),
+        ),
+      );
+    },
+  );
+}
+
+//Вкладка 2
+Widget firstTab() {
+  return StreamBuilder<List<Map<String, dynamic>>>(
+    stream: _tasksStream,
+    builder: (context, snapshot) {
+      if (!snapshot.hasData) {
+        return const Center(child: CircularProgressIndicator());
+      }
+      final tasks = snapshot.data!; //не null
+      final filteredTasks = tasks
+          .where((task) => task['is_done'] == false)
+          .toList();
+      print(tasks);
+      return ListView.separated(
+        itemCount: filteredTasks.length,
+        separatorBuilder: (context, index) => Divider(),
+        itemBuilder: (context, i) => ListTile(
+          leading: Icon(Icons.bookmark),
+          trailing: Checkbox(
+            value: filteredTasks[i]['is_done'],
+            onChanged: (value) async {
+              await Supabase.instance.client
+                  .from('tasks')
+                  .update({'is_done': value})
+                  .eq('id', filteredTasks[i]['id']);
+            },
+          ),
+          title: Text(
+            filteredTasks[i]['name'],
+            style: (filteredTasks[i]['is_done'] ?? false)
+                ? const TextStyle(decoration: TextDecoration.lineThrough)
+                : null,
+          ),
+        ),
+      );
+    },
+  );
+}
+
+//Кнопка добавления записи
+Widget addButton(context) {
+  return FloatingActionButton(
+    child: const Icon(Icons.add),
+    onPressed: () {
+      showDialog(
+        context: context,
+        builder: (context) {
+          return SimpleDialog(
+            children: [
+              TextFormField(
+                onFieldSubmitted: (value) async {
+                  await Supabase.instance.client.from('tasks').insert({
+                    'name': value,
+                  });
+                },
+              ),
+            ],
+          );
+        },
+      );
+    },
+  );
 }

@@ -21,6 +21,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.purple),
       ),
@@ -68,24 +69,27 @@ class _MyHomePageState extends State<MyHomePage> {
                   return const Center(child: CircularProgressIndicator());
                 }
                 final tasks = snapshot.data!; //не null
+                final filteredTasks = tasks
+                    .where((task) => task['is_done'] == false)
+                    .toList();
                 print(tasks);
                 return ListView.separated(
-                  itemCount: tasks.length,
+                  itemCount: filteredTasks.length,
                   separatorBuilder: (context, index) => Divider(),
                   itemBuilder: (context, i) => ListTile(
                     leading: Icon(Icons.bookmark),
                     trailing: Checkbox(
-                      value: tasks[i]['is_done'],
+                      value: filteredTasks[i]['is_done'],
                       onChanged: (value) async {
                         await Supabase.instance.client
                             .from('tasks')
                             .update({'is_done': value})
-                            .eq('id', tasks[i]['id']);
+                            .eq('id', filteredTasks[i]['id']);
                       },
                     ),
                     title: Text(
-                      tasks[i]['name'],
-                      style: (tasks[i]['is_done'] ?? false)
+                      filteredTasks[i]['name'],
+                      style: (filteredTasks[i]['is_done'] ?? false)
                           ? const TextStyle(
                               decoration: TextDecoration.lineThrough,
                             )

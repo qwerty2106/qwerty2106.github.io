@@ -58,9 +58,14 @@ class _MyHomePageState extends State<MyHomePage> {
             Padding(
               padding: EdgeInsets.all(15),
               child: Container(
+                decoration: BoxDecoration(
+                  color: Colors.deepPurpleAccent,
+                  border: Border.all(color: Colors.pinkAccent, width: 3),
+                  boxShadow: [BoxShadow(color: Colors.black, blurRadius: 5, offset: Offset(5, 5))],
+                ),
                 width: 150,
                 height: 50,
-                color: Colors.deepPurple,
+                // color: Colors.deepPurple,
                 // decoration: Shadow(),
               ),
             ),
